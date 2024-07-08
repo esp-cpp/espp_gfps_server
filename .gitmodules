@@ -1,0 +1,3 @@
+[submodule "detail/nearby"]
+	path = detail/nearby
+	url = https://github.com/google/nearby

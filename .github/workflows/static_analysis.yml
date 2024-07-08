@@ -1,0 +1,32 @@
+name: Static analysis
+
+on: [pull_request]
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - name: Clone espp to setup build environment
+      uses: actions/checkout@v4
+      with:
+        repository: esp-cpp/espp
+        submodules: 'recursive'
+        path: ${{ github.workspace }}/espp
+
+    - name: Run static analysis
+      uses: esp-cpp/StaticAnalysis@master
+      with:
+        # Exclude any issues found in ${Project_root_dir}/components/espp
+        exclude_dir: "espp"
+
+        # Do not build the project and do not use cmake to generate compile_commands.json
+        use_cmake: false
+
+        # (Optional) cppcheck args
+        cppcheck_args: -i$GITHUB_WORKSPACE/espp -i$GITHUB_WORKSPACE/detail --force --enable=all --inline-suppr --inconclusive --platform=mips32 --suppressions-list=$GITHUB_WORKSPACE/suppressions.txt

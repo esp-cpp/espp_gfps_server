@@ -29,4 +29,4 @@ jobs:
         use_cmake: false
 
         # (Optional) cppcheck args
-        cppcheck_args: -i$GITHUB_WORKSPACE/espp --force --enable=all --inline-suppr --inconclusive --platform=mips32 --suppressions-list=$GITHUB_WORKSPACE/suppressions.txt
+        cppcheck_args: -i$GITHUB_WORKSPACE/espp -i$GITHUB_WORKSPACE/detail --force --enable=all --inline-suppr --inconclusive --platform=mips32 --suppressions-list=$GITHUB_WORKSPACE/suppressions.txt

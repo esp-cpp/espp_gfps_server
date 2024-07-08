@@ -1,0 +1,31 @@
+name: Build
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - name: Clone espp to setup build environment
+      uses: actions/checkout@v4
+      with:
+        repository: esp-cpp/espp
+        submodules: 'recursive'
+        path: ${{ github.workspace }}/espp
+
+    - name: Build Example
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: release-v5.2
+        target: esp32s3
+        path: example
+        # TODO: for some reason, cannot use ${{ github.workspace }} so have to hardcode it :/
+        command: idf.py build -DESPP_DIR=/app/esp-cpp/espp_gfps_service/espp
